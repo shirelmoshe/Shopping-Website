@@ -1,0 +1,38 @@
+<div class="container text-center">
+    <h1>Product card</h1>
+    <span>Create With <i class="zmdi zmdi-favorite red"></i>  By: <strong>Deni Kurniawan</strong> From: <i><a href="http://blog.wingerdstok.com" class="wsk-btn">Wingerdstok</a></i></span>
+  </div>
+  
+  <div class="shell">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3" *ngFor="let product of products">
+          <div class="wsk-cp-product">
+            <div class="wsk-cp-img">
+                <a routerLink="/products/{{product.product_id}}">
+              <img src="{{ product.image_url}}" alt="Product" class="img-responsive" />
+            </a>
+            </div>
+            <div class="wsk-cp-text">
+             
+              <div class="title-product">
+                <a routerLink="/products/{{product.product_id}}">
+                <h3>{{ product.name}}</h3>
+            </a>
+              </div>
+              <div class="description-prod">
+                <p>{{ product.description }}</p>
+              </div>
+              <div class="card-footer">
+                <div class="wcf-left"><span class="price">{{ product.price }}</span></div>
+                <div class="wcf-right">
+                    <a href="#" class="buy-btn" ><i class="zmdi zmdi-shopping-basket"></i> Add to Cart</a>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
