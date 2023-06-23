@@ -1,0 +1,46 @@
+<div class="main-content page-m">
+  <form [formGroup]="checkoutFormGroup" >
+    <h2>Customer</h2>
+    <input type="text" formControlName="firstName" placeholder="First Name" class="form__input" id="firstName" />
+    <label for="firstName" class="form__label">First Name</label>
+
+    <input type="text" formControlName="lastName" placeholder="Last Name" class="form__input" id="lastName" />
+    <label for="lastName" class="form__label">Last Name</label>
+
+    <input type="email" formControlName="email" placeholder="Email" class="form__input" id="email"/>
+
+    <div class="text-center">
+      <button type="submit">Purchase</button>
+    </div>
+
+    <h2>Shipping Address</h2>
+    <input type="text" formControlName="street" placeholder="Street" class="form__input" />
+    <input type="text" formControlName="city" placeholder="City" class="form__input" />
+    <input type="text" formControlName="country" placeholder="Country" class="form__input" />
+
+    <h2>Card Details</h2>
+    <select formControlName="cardType" class="form__input">
+      <option value="">Select Card Type</option>
+      <option value="visa">Visa</option>
+      <option value="mastercard">Mastercard</option>
+      <option value="amex">American Express</option>
+    </select>
+    <input type="text" formControlName="nameOnCard" placeholder="Name on Card" class="form__input" />
+    <input type="text" formControlName="cardNumber" placeholder="Card Number" class="form__input" />
+    <input type="text" formControlName="securityCode" placeholder="Security Code" class="form__input" />
+    <input type="text" formControlName="expirationMonth" placeholder="Expiration Month" class="form__input" />
+    <input type="text" formControlName="expirationYear" placeholder="Expiration Year" class="form__input" />
+
+    <div>
+      <h3>Review order</h3>
+      <p>Quantity: {{ totalQuantity }}</p>
+      <p>Price: {{ totalPrice }}</p>
+    </div>
+
+    <div class="text-center">
+      <button type="submit">Submit</button>
+      <button (click)="getFormData()">Get Form Data</button>
+
+    </div>
+  </form>
+</div>

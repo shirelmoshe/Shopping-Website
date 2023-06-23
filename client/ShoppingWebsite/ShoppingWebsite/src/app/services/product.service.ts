@@ -9,6 +9,7 @@ import { Product } from '../common/product';
   providedIn: 'root'
 })
 export class ProductService {
+ 
 
  
   private baseUrl = 'http://localhost:8080/api/products';
@@ -30,6 +31,11 @@ export class ProductService {
     );
   }
 
+  getProductId(theProductId: number):Observable<Product> {
+    const productUrl =`${this.baseUrl}/${theProductId}`;
+
+    return this.httpClient.get<Product>(productUrl);
+     }
 
 
   searchProduct(theKeyword: string):Observable<Product[]> {
@@ -40,6 +46,10 @@ export class ProductService {
     );
   
   }
+
+
+
+
   
 }
 interface GetResponseProduct {

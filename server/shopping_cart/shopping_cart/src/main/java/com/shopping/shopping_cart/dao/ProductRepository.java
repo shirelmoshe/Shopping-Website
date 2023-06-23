@@ -12,6 +12,6 @@ import org.springframework.data.domain.Pageable;
 @CrossOrigin("http://localhost:4200")
 @RepositoryRestResource(collectionResourceRel = "products", path = "products", excerptProjection = Product.class)
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-        Page<Product> findByCategoryId(@Param("id") Integer id, Pageable pageable);
-        Page<Product> findByNameContaining(@Param("name") String name,Pageable page);
+    Page<Product> findByCategoryId(@Param("id") Integer id, Pageable pageable);
+    Page<Product> findByNameContaining(@Param("name") String name,Pageable page);
 }

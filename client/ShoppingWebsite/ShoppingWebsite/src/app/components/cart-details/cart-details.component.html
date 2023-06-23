@@ -1,0 +1,54 @@
+<div class="main-content">
+    <div class="container">
+      <table class="table table-hover" id="keywords">
+        <thead class="table-dark">
+          <tr>
+            <th><span>Product Image</span></th>
+            <th><span>Product Detail</span></th>
+            <th><span>Quantity</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tempCartItem of cartItems">
+            <td class="lalign">
+              <img [src]="tempCartItem.image_url" />
+            </td>
+            <td>
+              <p>{{ tempCartItem.name }}</p>
+              <p>{{ tempCartItem.price | currency:'USD' }}</p>
+            </td>
+            <td>
+              <div>
+                <label>Quantity: </label>
+                <div>
+                  <button (click)="incrementQuantity(tempCartItem)">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+              <div>
+                {{ tempCartItem.quantity }}
+                <div>
+                  <button (click)="decrementQuntity(tempCartItem)">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <button (click)="remove(tempCartItem)">Remove</button>
+              <p>Subtotal: {{ tempCartItem.quantity * tempCartItem.price | currency:'USD' }}</p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td style="font-weight: bold">
+              <p>Total Quantity: {{ totalQuantity }}</p>
+              <p>Total Price: {{ totalPrice | currency:'USD' }}</p>
+              <a routerLink="/checkout"><button>Checkout</button></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
