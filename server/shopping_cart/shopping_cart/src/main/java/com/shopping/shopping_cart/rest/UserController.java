@@ -33,6 +33,8 @@ public class UserController {
         return ResponseEntity.ok(authenticatedUser);
     }
 
+
+
     // Get a user by ID
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable Long userId)  {

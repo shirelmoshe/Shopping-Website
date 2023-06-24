@@ -1,5 +1,5 @@
 <div class="main-content page-m">
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" action="#" th:cation="@{/login}" method="POST">
       <label for="email" class="form__label">Email</label>
       <input type="email" formControlName="email" placeholder="Email" class="form__input" id="email" />
       

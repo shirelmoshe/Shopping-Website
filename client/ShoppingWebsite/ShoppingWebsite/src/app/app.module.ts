@@ -27,6 +27,7 @@ import { ProductFormComponent } from './components/product-form/product-form.com
 
 
   const routes: Routes = [
+    { path: 'login', component: LoginComponent },
     { path: 'checkout', component: CheckoutComponent },
     { path: 'cart-details', component: CartDetailsComponent },
     { path: 'search/:keyword', component: ProductListComponent },
