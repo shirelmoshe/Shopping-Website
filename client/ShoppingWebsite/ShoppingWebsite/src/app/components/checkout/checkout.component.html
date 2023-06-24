@@ -9,9 +9,7 @@
 
     <input type="email" formControlName="email" placeholder="Email" class="form__input" id="email"/>
 
-    <div class="text-center">
-      <button type="submit">Purchase</button>
-    </div>
+
 
     <h2>Shipping Address</h2>
     <input type="text" formControlName="street" placeholder="Street" class="form__input" />
@@ -43,4 +41,11 @@
 
     </div>
   </form>
+
+  <div *ngIf="purchaseSuccess" class="success-message">
+    Purchase successful!
+  </div>
+  <div *ngIf="purchaseError" class="error-message">
+    Failed to place the order. Please try again.
+  </div>
 </div>

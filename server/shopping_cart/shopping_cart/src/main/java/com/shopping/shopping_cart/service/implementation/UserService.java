@@ -2,88 +2,113 @@ package com.shopping.shopping_cart.service.implementation;
 
 import com.shopping.shopping_cart.dao.UserRepository;
 import com.shopping.shopping_cart.entity.User;
-import com.shopping.shopping_cart.exception.ApiException;
-import com.shopping.shopping_cart.service.IUserRepository;
+import com.shopping.shopping_cart.exception.UserNotFoundException;
+import com.shopping.shopping_cart.model.Rolse;
+import com.shopping.shopping_cart.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
-public class UserService implements IUserRepository {
+public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
-    @Override
-    public Collection<User> listUsers(int page, int pageSize) {
-        return null;
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
     }
 
-    public User createUser(User user) {
-        try {
-            // Check if user with the same email already exists
-            User existingUser = userRepository.findByEmail(user.getEmail());
-            if (existingUser != null) {
-                throw new ApiException("User with the same email already exists");
-            }
+    public User updateUser(Long userId, User updatedUser) {
+        User user = getUserById(userId);
 
-            // Save the new user
-            User createdUser = userRepository.save(user);
+        user.setName(updatedUser.getName());
+        user.setEmail(updatedUser.getEmail());
+        // Update other properties as needed
 
-            // Retrieve the ID of the created user
-            int userId = createdUser.getUserId();
+        User updated = userRepository.save(user);
+        // Add logs
+        System.out.println("User updated: " + updated);
+        return updated;
+    }
 
-            // Set the ID of the created user
-            createdUser.setUserId(userId);
+    public void deleteUser(Long userId) {
+        User user = getUserById(userId);
+        userRepository.delete(user);
+        // Add logs
+        System.out.println("User deleted with ID: " + userId);
+    }
 
-            return createdUser;
-        } catch (Exception ex) {
-            throw new ApiException("Failed to create user");
+    public User registerUser(User user) {
+        Rolse userType = user.getUserType();
+        Set<String> roles = new HashSet<>();
+
+        if (userType == Rolse.user) {
+            roles.add("user");
+        } else if (userType == Rolse.admin) {
+            roles.add("admin");
         }
+
+        user.setRoles(roles);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        User registeredUser = userRepository.save(user);
+        // Add logs
+        System.out.println("User registered: " + registeredUser);
+        return registeredUser;
     }
 
-
-
-    @Override
-    public Boolean deleteUser(Long id) {
-        return null;
+    public User getUserProfile(Long userId) {
+        return getUserById(userId);
     }
 
-    public Collection<User> getAllUsers() {
-        try {
-            return userRepository.findAll();
-        } catch (Exception ex) {
-            throw new ApiException("Failed to retrieve user list");
+    public User authenticateUser(String email, String password) {
+        User user = userRepository.findByEmail(email);
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            return user;
         }
+        throw new IllegalArgumentException("Invalid email or password");
     }
 
-    public User getUserById(Long id) {
-        try {
-            return userRepository.findById(id)
-                    .orElseThrow(() -> new ApiException("User not found"));
-        } catch (Exception ex) {
-            throw new ApiException("Failed to retrieve user");
-        }
+    public String requestPasswordReset(Long userId) {
+        User user = getUserById(userId);
+
+        UUID token = UUID.randomUUID();
+        String resetToken = token.toString();
+
+        user.setResetToken(resetToken);
+        user.setResetTokenExpiry(getResetTokenExpiry());
+        userRepository.save(user);
+
+        sendPasswordResetNotification(user.getEmail(), resetToken);
+
+        return resetToken;
     }
 
-    public User updateUser(User user) {
-        try {
-            return userRepository.save(user);
-        } catch (Exception ex) {
-            throw new ApiException("Failed to update user");
-        }
+    private void sendPasswordResetNotification(String email, String resetToken) {
+        String subject = "Password Reset";
+        String body = "Dear user,\n\nYou have requested a password reset. Please use the following token: " + resetToken;
+        emailService.sendEmail(email, subject, body);
     }
 
-    public void deleteUserById(Long id) {
-        try {
-            userRepository.deleteById(id);
-        } catch (Exception ex) {
-            throw new ApiException("Failed to delete user");
-        }
+    private Date getResetTokenExpiry() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR_OF_DAY, 1);
+        return calendar.getTime();
     }
 }

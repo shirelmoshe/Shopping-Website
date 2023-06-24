@@ -4,11 +4,14 @@ import com.shopping.shopping_cart.model.Rolse;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.Date;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -22,23 +25,51 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "UserType")
-    private String userType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_type")
+    private Rolse userType;
 
     @Column(name = "password")
     private String password;
 
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<String> roles;
 
-    private Rolse rolse;
-    private Boolean locked;
-    private  Boolean enabled;
-    // Constructors
+    // Constructors, Getters, and Setters
 
     public User() {
     }
 
-    // Getters and Setters
+    public User(String name, String email, Rolse userType, String password) {
+        this.name = name;
+        this.email = email;
+        this.userType = userType;
+        this.password = password;
+
+    }
+    private Date resetTokenExpiry;
+
+    public void setResetTokenExpiry(Date resetTokenExpiry) {
+        this.resetTokenExpiry = resetTokenExpiry;
+    }
+
+
+
+        // Other properties and methods
+
+        private String resetToken;
+
+        public void setResetToken(String resetToken) {
+            this.resetToken = resetToken;
+        }
+
+        // Getter and other methods
+
+
 
     public int getUserId() {
         return userId;
@@ -64,11 +95,11 @@ public class User {
         this.email = email;
     }
 
-    public String getUserType() {
+    public Rolse getUserType() {
         return userType;
     }
 
-    public void setUserType(String userType) {
+    public void setUserType(Rolse userType) {
         this.userType = userType;
     }
 
@@ -76,7 +107,16 @@ public class User {
         return password;
     }
 
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
     }
 }

@@ -1,0 +1,15 @@
+<div class="main-content page-m">
+    <form [formGroup]="loginForm">
+      <label for="email" class="form__label">Email</label>
+      <input type="email" formControlName="email" placeholder="Email" class="form__input" id="email" />
+      
+      <label for="password" class="form__label">Password</label>
+      <input type="password" formControlName="password" placeholder="Password" class="form__input" id="password" />
+  
+      <div class="text-center">
+        <button type="submit">Login</button>
+        <button (click)="loginUser()">Login</button>
+      </div>
+    </form>
+  </div>
+  

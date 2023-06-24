@@ -1,0 +1,32 @@
+<div class="main-content page-m">
+    <form [formGroup]="productForm">
+      <label for="sku" class="form__label">SKU</label>
+      <input type="text" formControlName="sku" placeholder="SKU" class="form__input" id="sku" />
+  
+      <label for="imageUrl" class="form__label">Image URL</label>
+      <input type="text" formControlName="imageUrl" placeholder="Image URL" class="form__input" id="imageUrl" />
+  
+      <label for="active" class="form__label">Active</label>
+      <input type="checkbox" formControlName="active" class="form__input" id="active" />
+  
+      <label for="name" class="form__label">Name</label>
+      <input type="text" formControlName="name" placeholder="Name" class="form__input" id="name" />
+  
+      <label for="description" class="form__label">Description</label>
+      <textarea formControlName="description" placeholder="Description" class="form__input" id="description"></textarea>
+  
+      <label for="price" class="form__label">Price</label>
+      <input type="number" formControlName="price" placeholder="Price" class="form__input" id="price" />
+  
+      <label for="quantity" class="form__label">Quantity</label>
+      <input type="number" formControlName="quantity" placeholder="Quantity" class="form__input" id="quantity" />
+  
+      <label for="categoryId" class="form__label">Category ID</label>
+      <input type="number" formControlName="categoryId" placeholder="Category ID" class="form__input" id="categoryId" />
+  
+      <div class="text-center">
+        <button type="submit" (click)="addProduct()">Add Product</button>
+      </div>
+    </form>
+  </div>
+  

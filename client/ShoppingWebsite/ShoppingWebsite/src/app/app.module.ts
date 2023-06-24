@@ -15,6 +15,12 @@ import { SearchComponent } from './components/search/search.component';
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 import { CheckoutComponent } from './components/checkout/checkout.component'; 
 import { ReactiveFormsModule ,FormsModule} from '@angular/forms';
+import { ComponentsComponent } from './components/components.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { LoginComponent } from './components/login/login.component';
+import { ProductFormComponent } from './components/product-form/product-form.component';
+
+
 
 
 
@@ -45,7 +51,12 @@ import { ReactiveFormsModule ,FormsModule} from '@angular/forms';
       ProductDeatailsComponent,
       CartStatusComponent,
       CartDetailsComponent,
-      CheckoutComponent
+      CheckoutComponent,
+      ComponentsComponent,
+      RegistrationComponent,
+      LoginComponent,
+      ProductFormComponent,
+   
     
     ],
     imports: [

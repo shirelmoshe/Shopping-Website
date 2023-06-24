@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { CheckoutService } from './../../services/checkout.service';
-import { CartService } from './../../services/cart.service';
-
 import { HttpClient } from '@angular/common/http';
 import { Orders } from 'src/app/common/orders';
+import { CartService } from './../../services/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -17,6 +15,8 @@ export class CheckoutComponent implements OnInit {
   checkoutFormGroup!: FormGroup;
   totalPrice: number = 0;
   totalQuantity: number = 0;
+  purchaseSuccess: boolean = false;
+  purchaseError: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -73,22 +73,22 @@ export class CheckoutComponent implements OnInit {
       this.http.post('http://localhost:8080/api/orders', order)
         .subscribe(
           response => {
-            // Handle success response
+            this.purchaseSuccess = true;
+            this.purchaseError = false;
             console.log('Order placed successfully:', response);
-            // Optionally, navigate to a success page
             this.router.navigate(['/success']);
           },
           error => {
-            // Handle error response
+            this.purchaseSuccess = false;
+            this.purchaseError = true;
             console.error('Failed to place order:', error);
-            // Optionally, display an error message to the user
           }
         );
     } else {
       console.log('Form data:', this.checkoutFormGroup.value);
-      // Form is invalid or checkoutFormGroup is null, display an error message or perform some action
+      this.purchaseSuccess = false;
+      this.purchaseError = true;
       console.error('Form is invalid or checkoutFormGroup is null.');
-      // Optionally, display an error message to the user or perform some action
     }
   }
 
@@ -96,7 +96,7 @@ export class CheckoutComponent implements OnInit {
     const url = 'http://localhost:8080/api/orders';
     const formData = this.checkoutFormGroup.value;
     console.log('Form data:', formData);
-  
+
     return this.http.post(url, formData).subscribe(
       (response: any) => {
         console.log('Form data retrieved successfully', response);
@@ -108,5 +108,4 @@ export class CheckoutComponent implements OnInit {
       }
     );
   }
-  
 }

@@ -13,7 +13,8 @@ export class ProductService {
 
  
   private baseUrl = 'http://localhost:8080/api/products';
-  private categoryUrl = 'http://localhost:8080/api/product-category'
+  private categoryUrl = 'http://localhost:8080/api/product-category';
+  private addProductApi = 'http://localhost:8080/api/add';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -23,6 +24,9 @@ export class ProductService {
     return this.httpClient.get<GetResponseProduct>(searchUrl).pipe(
       map(response => response._embedded.products)
     );
+  }
+  addProduct(productData: Product): Observable<Product> {
+    return this.httpClient.post<Product>(`${this.addProductApi}/add`, productData);
   }
   
   getProductCategories():Observable<ProductCategory[]>{
@@ -49,6 +53,9 @@ export class ProductService {
 
 
 
+ 
+  
+
 
   
 }
@@ -63,4 +70,6 @@ interface GetResponseProductCatrgory {
     productCategory: ProductCategory[];
   }
 }
+
+
 

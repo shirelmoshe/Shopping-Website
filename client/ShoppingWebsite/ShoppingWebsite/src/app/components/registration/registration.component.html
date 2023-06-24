@@ -1,0 +1,32 @@
+<div class="main-content page-m">
+    <form [formGroup]="registrationForm" >
+        <label for="firstName" class="form__label">name</label>
+      <input type="text" formControlName="name" placeholder="name" class="form__input" id="name" />
+     
+      <label for="email" class="form__label">email</label>
+      <input type="text" formControlName="email" placeholder="email" class="form__input" id="email" />
+     
+      <label for="password" class="form__label">password</label>
+      <input type="password" formControlName="password" placeholder="password" class="form__input" id="password"/>
+  
+     
+  
+  
+
+      <select formControlName="user_type" class="form__input">
+        <option value="">Select user type</option>
+        <option value="user">user</option>
+        <option value="admin">admin</option>
+    
+      </select>
+    
+ 
+  
+      <div class="text-center">
+  
+        <button (click)="registerUser()">Submit</button>
+  
+      </div>
+    </form>
+  </div>
+ 

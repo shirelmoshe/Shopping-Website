@@ -24,30 +24,20 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-        HttpMethod[] theUnsupportedActions = {HttpMethod.PUT, HttpMethod.DELETE};
-
-        // Disable unsupported HTTP methods for Product and ProductCategory
-        config.getExposureConfiguration()
-                .forDomainType(Product.class)
-                .withItemExposure((metadata, httpMethods) -> httpMethods.disable(theUnsupportedActions))
-                .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(theUnsupportedActions));
-
-        config.getExposureConfiguration()
-                .forDomainType(ProductCategory.class)
-                .withItemExposure((metadata, httpMethods) -> httpMethods.disable(theUnsupportedActions))
-                .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(theUnsupportedActions));
-
-        // Expose entity ids
+        // Expose entity IDs in the REST API
         config.exposeIdsFor(Product.class, ProductCategory.class, Order.class);
 
-        // Configure the default media type as JSON
+        // Set the default media type to JSON
         config.setDefaultMediaType(MediaType.APPLICATION_JSON);
 
-        // Disable the exposure of repository methods
+        // Use annotated repository detection strategy
         config.setRepositoryDetectionStrategy(RepositoryDetectionStrategy.RepositoryDetectionStrategies.ANNOTATED);
 
-        // Print the base path
+        // Enable CORS for all endpoints and allow all HTTP methods
+        cors.addMapping("/**").allowedMethods("*");
+
+        // Log the base path of the Order repository
         String basePath = config.getBasePath().getPath();
-        System.out.println("Order base path: " + basePath );
+        System.out.println("Order base path: " + basePath);
     }
 }
